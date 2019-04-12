@@ -2,6 +2,7 @@ using Autofac;
 using JetBrains.Annotations;
 using Lykke.Common.Chaos;
 using Lykke.Job.NeoGasDistributor.Settings;
+using Lykke.Job.NeoGasDistributor.Utils;
 using Lykke.SettingsReader;
 
 namespace Lykke.Job.NeoGasDistributor.Modules
@@ -23,6 +24,11 @@ namespace Lykke.Job.NeoGasDistributor.Modules
         {
             builder
                 .RegisterChaosKitty(_chaosSettings);
+
+            builder
+                .RegisterType<DateTimeProvider>()
+                .As<IDateTimeProvider>()
+                .SingleInstance();
         }
     }
 }

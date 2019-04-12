@@ -18,9 +18,6 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
     [UsedImplicitly]
     public class BalanceUpdateRepository : IBalanceUpdateRepository
     {
-        private static readonly Guid MinWalletId = Guid.Empty;
-        private static readonly Guid MaxWalletId = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff");
-        
         private readonly INoSQLTableStorage<BalanceUpdateEntity> _balanceUpdateTable;
 
         private BalanceUpdateRepository(
@@ -120,14 +117,14 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
                 (
                     propertyName: nameof(AzureTableEntity.RowKey),
                     operation: QueryComparisons.GreaterThan,
-                    givenValue: GetRowKey(from, MinWalletId)
+                    givenValue: GetRowKey(from, GuidMinMax.Min)
                 );
                 
                 var toQuery = TableQuery.GenerateFilterCondition
                 (
                     propertyName: nameof(AzureTableEntity.RowKey),
                     operation: QueryComparisons.LessThanOrEqual,
-                    givenValue: GetRowKey(to, MaxWalletId)
+                    givenValue: GetRowKey(to, GuidMinMax.Max)
                 );
 
                 var rangeQuery = TableQuery.CombineFilters

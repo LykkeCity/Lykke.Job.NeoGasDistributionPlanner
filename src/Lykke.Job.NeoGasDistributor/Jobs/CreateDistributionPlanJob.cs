@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Cronos;
 using Lykke.Job.NeoGasDistributor.Domain.Services;
+using Lykke.Job.NeoGasDistributor.Utils;
 
 namespace Lykke.Job.NeoGasDistributor.Jobs
 {
@@ -10,49 +12,44 @@ namespace Lykke.Job.NeoGasDistributor.Jobs
         private readonly IBalanceService _balanceService;
         private readonly CronExpression _createDistributionPlanCron;
         private readonly TimeSpan _createDistributionPlanDelay;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IDistributionPlanService _distributionPlanService;
 
         public CreateDistributionPlanJob(
             IBalanceService balanceService,
-            IDistributionPlanService distributionPlanService,
             CronExpression createDistributionPlanCron,
-            TimeSpan createDistributionPlanDelay)
+            TimeSpan createDistributionPlanDelay,
+            IDateTimeProvider dateTimeProvider,
+            IDistributionPlanService distributionPlanService)
         {
             _balanceService = balanceService;
             _createDistributionPlanCron = createDistributionPlanCron;
             _createDistributionPlanDelay = createDistributionPlanDelay;
+            _dateTimeProvider = dateTimeProvider;
             _distributionPlanService = distributionPlanService;
         }
 
         public async Task ExecuteAsync()
         {
-            var from = await _distributionPlanService.TryGetLatestPlanTimestampAsync();         
-            var to   = DateTime.UtcNow - _createDistributionPlanDelay;
-            
+            var from = await _distributionPlanService.TryGetLatestPlanTimestampAsync()
+                    ?? await _balanceService.TryGetFirstBalanceUpdateTimestampAsync();
+
             if (from != null)
             {
-                var missedTimestamps = _createDistributionPlanCron.GetOccurrences
+                var missedExecutions = _createDistributionPlanCron.GetOccurrences
                 (
                     fromUtc: from.Value,
-                    toUtc: to,
+                    toUtc: _dateTimeProvider.UtcNow,
                     fromInclusive: false,
                     toInclusive: true
-                );
+                ).ToList();
 
-                foreach (var missedTimestamp in missedTimestamps)
+                if (missedExecutions.Any())
                 {
-                    to = missedTimestamp;
+                    var to = missedExecutions.Last() - _createDistributionPlanDelay;
                     
                     await _distributionPlanService.CreatePlanAsync(from.Value, to);
-
-                    from = to;
                 }
-            }
-            else
-            {
-                from = await _balanceService.TryGetFirstBalanceUpdateTimestampAsync();
-                
-                await _distributionPlanService.CreatePlanAsync(from.Value, to);
             }
         }
     }

@@ -18,8 +18,6 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
     [UsedImplicitly]
     public class ClaimedGasAmountRepository : IClaimedGasAmountRepository
     {
-        private static readonly Guid MinTransactionId = Guid.Empty;
-        private static readonly Guid MaxTransactionId = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff");
         
         
         private readonly INoSQLTableStorage<ClaimedGasAmountEntity> _claimedGasAmountTable;
@@ -114,14 +112,14 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
                 (
                     propertyName: nameof(AzureTableEntity.RowKey),
                     operation: QueryComparisons.GreaterThan,
-                    givenValue: GetRowKey(from, MinTransactionId)
+                    givenValue: GetRowKey(from, GuidMinMax.Min)
                 );
                 
                 var toQuery = TableQuery.GenerateFilterCondition
                 (
                     propertyName: nameof(AzureTableEntity.RowKey),
                     operation: QueryComparisons.LessThanOrEqual,
-                    givenValue: GetRowKey(to, MaxTransactionId)
+                    givenValue: GetRowKey(to, GuidMinMax.Max)
                 );
 
                 var rangeQuery = TableQuery.CombineFilters

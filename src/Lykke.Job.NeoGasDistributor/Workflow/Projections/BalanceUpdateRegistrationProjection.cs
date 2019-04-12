@@ -22,7 +22,7 @@ namespace Lykke.Job.NeoGasDistributor.Workflow.Projections
 
         
         [UsedImplicitly]
-        private async Task Handle(
+        public async Task Handle(
             BalanceUpdatedEvent evt)
         {
             if (evt.AssetId == _neoAssetId)

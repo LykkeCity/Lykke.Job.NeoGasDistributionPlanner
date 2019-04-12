@@ -41,6 +41,7 @@
     <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Domain\Lykke.Job.NeoGasDistributor.Domain.csproj" />
     <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Repositories\Lykke.Job.NeoGasDistributor.Repositories.csproj" />
     <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Services\Lykke.Job.NeoGasDistributor.Services.csproj" />
+    <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Utils\Lykke.Job.NeoGasDistributor.Utils.csproj" />
   </ItemGroup>
 
 </Project>

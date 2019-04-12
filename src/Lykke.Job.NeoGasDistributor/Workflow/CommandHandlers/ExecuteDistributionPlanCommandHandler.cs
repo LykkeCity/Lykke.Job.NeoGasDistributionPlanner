@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
+using Common.Log;
 using JetBrains.Annotations;
+using Lykke.Common.Log;
 using Lykke.Cqrs;
 using Lykke.Job.NeoGasDistributor.Domain.Services;
 using NeoGasDistributor.Contract.Commands;
@@ -9,11 +12,14 @@ namespace Lykke.Job.NeoGasDistributor.Workflow.CommandHandlers
     public class ExecuteDistributionPlanCommandHandler
     {
         private readonly IDistributionPlanService _distributionPlanService;
+        private readonly ILog _log;
 
         public ExecuteDistributionPlanCommandHandler(
-            IDistributionPlanService distributionPlanService)
+            IDistributionPlanService distributionPlanService,
+            ILogFactory logFactory)
         {
             _distributionPlanService = distributionPlanService;
+            _log = logFactory.CreateLog(this);
         }
 
         [UsedImplicitly]
@@ -21,7 +27,27 @@ namespace Lykke.Job.NeoGasDistributor.Workflow.CommandHandlers
             ExecuteDistributionPlanCommand command,
             IEventPublisher publisher)
         {
-            await _distributionPlanService.ExecutePlanAsync(command.PlanId);
+            if (await _distributionPlanService.PlanExistsAsync(command.PlanId))
+            {
+                try
+                {
+                    await _distributionPlanService.ExecutePlanAsync(command.PlanId);
+                }
+                catch (Exception)
+                {
+                    var retryDelay = TimeSpan.FromSeconds(30);
+                
+                    return CommandHandlingResult.Fail(retryDelay);
+                }
+            }
+            else
+            {
+                _log.Warning
+                (
+                    $"Distribution plan [{command.PlanId}] has not been executed: plan does not exist.",
+                    context: command
+                );
+            }
             
             return CommandHandlingResult.Ok();
         }

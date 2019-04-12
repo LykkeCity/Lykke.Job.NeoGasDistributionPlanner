@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Lykke.Job.NeoGasDistributor.Domain.Services;
 using Lykke.Job.NeoGasDistributor.Jobs;
 using Lykke.Job.NeoGasDistributor.Settings;
+using Lykke.Job.NeoGasDistributor.Utils;
 using Lykke.Logs.Hangfire;
 using Lykke.SettingsReader;
 
@@ -34,7 +35,8 @@ namespace Lykke.Job.NeoGasDistributor.Modules
                 (
                     ctx.Resolve<IBalanceService>(),
                     CronExpression.Parse(_jobSettings.CreateBalanceSnapshotCron),
-                    _jobSettings.CreateBalanceSnapshotDelay
+                    _jobSettings.CreateBalanceSnapshotDelay,
+                    ctx.Resolve<IDateTimeProvider>()
                 ))
                 .AsSelf()
                 .SingleInstance();
@@ -43,9 +45,10 @@ namespace Lykke.Job.NeoGasDistributor.Modules
                 .Register(ctx => new CreateDistributionPlanJob
                 (
                     ctx.Resolve<IBalanceService>(),
-                    ctx.Resolve<IDistributionPlanService>(),
                     CronExpression.Parse(_jobSettings.CreateDistributionPlanCron),
-                    _jobSettings.CreateDistributionPlanDelay
+                    _jobSettings.CreateDistributionPlanDelay,
+                    ctx.Resolve<IDateTimeProvider>(),
+                    ctx.Resolve<IDistributionPlanService>()
                 ))
                 .AsSelf()
                 .SingleInstance();

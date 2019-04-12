@@ -49,7 +49,8 @@ namespace Lykke.Job.NeoGasDistributor.Modules
             builder
                 .Register(ctx => new ExecuteDistributionPlanCommandHandler
                 (
-                    ctx.Resolve<IDistributionPlanService>()
+                    ctx.Resolve<IDistributionPlanService>(),
+                    ctx.Resolve<ILogFactory>()
                 ))
                 .SingleInstance();
 
