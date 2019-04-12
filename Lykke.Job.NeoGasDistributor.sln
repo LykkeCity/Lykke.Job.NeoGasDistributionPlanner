@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DDB447D6-82C0-49B4-AE79-E2826CB8FCE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{37C0243F-A011-4BAE-B185-5F2AC1AE44D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.NeoGasDistributor", "src\Lykke.Job.NeoGasDistributor\Lykke.Job.NeoGasDistributor.csproj", "{576A0716-7E7E-4FB4-88D1-1E6498A74DFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.NeoGasDistributor.Domain", "src\Lykke.Job.NeoGasDistributor.Domain\Lykke.Job.NeoGasDistributor.Domain.csproj", "{A224B12D-53E8-4FAC-8AAC-FD962375D19B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contract", "contract", "{07A6C4C1-345C-4C9E-8975-E3B675D52A38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeoGasDistributor.Contract", "contract\NeoGasDistributor.Contract\NeoGasDistributor.Contract.csproj", "{77552238-EC2D-46AE-995E-AEBB3659172A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.NeoGasDistributor.Services", "src\Lykke.Job.NeoGasDistributor.Services\Lykke.Job.NeoGasDistributor.Services.csproj", "{DA2B85AE-8C6D-4659-A580-53D2F12B1D8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.NeoGasDistributor.Repositories", "src\Lykke.Job.NeoGasDistributor.Repositories\Lykke.Job.NeoGasDistributor.Repositories.csproj", "{9C749CC5-CAFC-4E1D-9822-B7F32A455FA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.NeoGasDistributor.Tests", "tests\Lykke.Job.NeoGasDistributor.Tests\Lykke.Job.NeoGasDistributor.Tests.csproj", "{1A6052CB-B763-4465-93BA-C4CA3AB5B422}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{110FF468-A93B-4678-8911-2D4F8444E566}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.NeoGasDistributor.Initializer", "tools\Lykke.Job.NeoGasDistributor.Initializer\Lykke.Job.NeoGasDistributor.Initializer.csproj", "{16AE04A7-F96B-4711-9D81-4D72D4215317}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{576A0716-7E7E-4FB4-88D1-1E6498A74DFA} = {DDB447D6-82C0-49B4-AE79-E2826CB8FCE0}
+		{A224B12D-53E8-4FAC-8AAC-FD962375D19B} = {DDB447D6-82C0-49B4-AE79-E2826CB8FCE0}
+		{77552238-EC2D-46AE-995E-AEBB3659172A} = {07A6C4C1-345C-4C9E-8975-E3B675D52A38}
+		{DA2B85AE-8C6D-4659-A580-53D2F12B1D8C} = {DDB447D6-82C0-49B4-AE79-E2826CB8FCE0}
+		{9C749CC5-CAFC-4E1D-9822-B7F32A455FA7} = {DDB447D6-82C0-49B4-AE79-E2826CB8FCE0}
+		{1A6052CB-B763-4465-93BA-C4CA3AB5B422} = {37C0243F-A011-4BAE-B185-5F2AC1AE44D8}
+		{16AE04A7-F96B-4711-9D81-4D72D4215317} = {110FF468-A93B-4678-8911-2D4F8444E566}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{576A0716-7E7E-4FB4-88D1-1E6498A74DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{576A0716-7E7E-4FB4-88D1-1E6498A74DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{576A0716-7E7E-4FB4-88D1-1E6498A74DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{576A0716-7E7E-4FB4-88D1-1E6498A74DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A224B12D-53E8-4FAC-8AAC-FD962375D19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A224B12D-53E8-4FAC-8AAC-FD962375D19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A224B12D-53E8-4FAC-8AAC-FD962375D19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A224B12D-53E8-4FAC-8AAC-FD962375D19B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77552238-EC2D-46AE-995E-AEBB3659172A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77552238-EC2D-46AE-995E-AEBB3659172A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77552238-EC2D-46AE-995E-AEBB3659172A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77552238-EC2D-46AE-995E-AEBB3659172A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA2B85AE-8C6D-4659-A580-53D2F12B1D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA2B85AE-8C6D-4659-A580-53D2F12B1D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA2B85AE-8C6D-4659-A580-53D2F12B1D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA2B85AE-8C6D-4659-A580-53D2F12B1D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C749CC5-CAFC-4E1D-9822-B7F32A455FA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C749CC5-CAFC-4E1D-9822-B7F32A455FA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C749CC5-CAFC-4E1D-9822-B7F32A455FA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C749CC5-CAFC-4E1D-9822-B7F32A455FA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A6052CB-B763-4465-93BA-C4CA3AB5B422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A6052CB-B763-4465-93BA-C4CA3AB5B422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A6052CB-B763-4465-93BA-C4CA3AB5B422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A6052CB-B763-4465-93BA-C4CA3AB5B422}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16AE04A7-F96B-4711-9D81-4D72D4215317}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16AE04A7-F96B-4711-9D81-4D72D4215317}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16AE04A7-F96B-4711-9D81-4D72D4215317}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16AE04A7-F96B-4711-9D81-4D72D4215317}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

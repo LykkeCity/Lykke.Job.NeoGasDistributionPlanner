@@ -1,2 +1,2 @@
-# Lykke.Job.NeoGasDistributionPlanner
-NEO Gas Distributon Planner
+# Lykke.Job.NeoGasDistributor
+NEO Gas Distribution Job
