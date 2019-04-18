@@ -46,7 +46,7 @@ namespace Lykke.Job.NeoGasDistributor.Services
         {
             var snapshots = await _snapshotRepository.GetAsync(from, to);
             var claimedGasAmounts = await _claimedGasAmountRepository.GetAsync(from, to);
-            var distributionAmounts = DistributionPlanCalculator.CalculateAmounts(snapshots, claimedGasAmounts);
+            var distributionAmounts = DistributionPlanCalculator.CalculateAmounts(snapshots, claimedGasAmounts, 8);
 
             var distributionPlan = DistributionPlanAggregate.Create(to, distributionAmounts);
 
@@ -67,7 +67,7 @@ namespace Lykke.Job.NeoGasDistributor.Services
                         id: distributionAmount.Id.ToString(),
                         clientId: distributionAmount.WalletId.ToString(),
                         assetId: _gasAssetId,
-                        amount: (double) distributionAmount.Value
+                        amount: ((double) distributionAmount.Value)
                     );
                     
                     // ReSharper disable once SwitchStatementMissingSomeCases

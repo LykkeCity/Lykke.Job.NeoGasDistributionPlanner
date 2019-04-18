@@ -35,17 +35,19 @@ namespace Lykke.Job.NeoGasDistributor.Jobs
 
             if (from != null)
             {
+                var to = _dateTimeProvider.UtcNow;
+                
                 var missedExecutions = _createBalanceSnapshotCron.GetOccurrences
                 (
                     fromUtc: from.Value + _createBalanceSnapshotDelay,
-                    toUtc: _dateTimeProvider.UtcNow - _createBalanceSnapshotDelay,
+                    toUtc: to,
                     fromInclusive: false,
                     toInclusive: true
-                );
+                ).ToList();
 
                 foreach (var missedExecution in missedExecutions)
                 {
-                    var to = missedExecution - _createBalanceSnapshotDelay;
+                    to = missedExecution - _createBalanceSnapshotDelay;
                     
                     await _balanceService.CreateSnapshotAsync(from.Value, to);
 

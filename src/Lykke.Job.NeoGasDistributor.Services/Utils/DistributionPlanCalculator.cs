@@ -13,7 +13,8 @@ namespace Lykke.Job.NeoGasDistributor.Services.Utils
         
         public static IEnumerable<DistributionPlanAggregate.Amount> CalculateAmounts(
             IEnumerable<SnapshotAggregate> snapshots,
-            IEnumerable<ClaimedGasAmountAggregate> claimedGasAmounts)
+            IEnumerable<ClaimedGasAmountAggregate> claimedGasAmounts,
+            int scale)
         {
             var totalGasAmount = claimedGasAmounts
                 .Sum(x => x.Amount);
@@ -55,10 +56,13 @@ namespace Lykke.Job.NeoGasDistributor.Services.Utils
                 .Select(x => new
                 {
                     x.WalletId,
-                    Ratio = decimal.Round(x.NeoAmount / totalNeoAmount, 8)
+                    Ratio = (x.NeoAmount / totalNeoAmount).RoundDown(8)
                 })
                 .Select(x => DistributionPlanAggregate.Amount.Create
-                (walletId: x.WalletId, value: totalGasAmount * x.Ratio))
+                (
+                    walletId: x.WalletId,
+                    value: (totalGasAmount * x.Ratio).RoundDown(scale)
+                ))
                 .Where(x => x.Value > 0);
         }
     }
