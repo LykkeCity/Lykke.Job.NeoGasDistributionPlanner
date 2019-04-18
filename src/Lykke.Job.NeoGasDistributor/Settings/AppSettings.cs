@@ -11,8 +11,6 @@ namespace Lykke.Job.NeoGasDistributor.Settings
     {
         public AssetServiceSettings AssetService { get; set; }
         
-        public string BlockchainApiClientHostUrl { get; set; }
-        
         [Optional]
         public ChaosSettings Chaos { get; set; }
 
