@@ -9,8 +9,8 @@
       <PackageReference Include="Cronos" Version="0.7.0" />
       <PackageReference Include="Lykke.Job.NeoClaimTransactionsExecutor.Contract" Version="1.0.1" />
       <PackageReference Include="Lykke.MatchingEngineConnector" Version="8.6.0" />
+      <PackageReference Include="Lykke.Service.Assets.Client" Version="5.2.1" />
       <PackageReference Include="Lykke.Service.Balances.Client" Version="2.3.1-beta" />
-      <PackageReference Include="Lykke.Service.BlockchainApi.Client" Version="17.7.0" />
     </ItemGroup>
 
     <ItemGroup>

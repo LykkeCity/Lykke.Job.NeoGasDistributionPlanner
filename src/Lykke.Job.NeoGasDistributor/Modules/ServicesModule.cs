@@ -8,7 +8,7 @@ using Lykke.Job.NeoGasDistributor.Services;
 using Lykke.Job.NeoGasDistributor.Settings;
 using Lykke.MatchingEngine.Connector.Abstractions.Services;
 using Lykke.Sdk;
-using Lykke.Service.BlockchainApi.Client;
+using Lykke.Service.Assets.Client;
 using Lykke.SettingsReader;
 
 namespace Lykke.Job.NeoGasDistributor.Modules
@@ -50,7 +50,7 @@ namespace Lykke.Job.NeoGasDistributor.Modules
             builder
                 .Register(ctx => new DistributionPlanService
                 (
-                    ctx.Resolve<IBlockchainApiClient>(),
+                    ctx.Resolve<IAssetsService>(),
                     ctx.Resolve<IClaimedGasAmountRepository>(),
                     ctx.Resolve<IDistributionPlanRepository>(),
                     ctx.Resolve<ILogFactory>(),

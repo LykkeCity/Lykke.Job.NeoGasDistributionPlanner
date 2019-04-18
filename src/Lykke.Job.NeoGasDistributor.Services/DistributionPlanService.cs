@@ -9,14 +9,14 @@ using Lykke.Job.NeoGasDistributor.Domain.Services;
 using Lykke.Job.NeoGasDistributor.Services.Utils;
 using Lykke.MatchingEngine.Connector.Abstractions.Services;
 using Lykke.MatchingEngine.Connector.Models.Api;
-using Lykke.Service.BlockchainApi.Client;
+using Lykke.Service.Assets.Client;
 
 namespace Lykke.Job.NeoGasDistributor.Services
 {
     [UsedImplicitly]
     public class DistributionPlanService : IDistributionPlanService
     {
-        private readonly IBlockchainApiClient _blockchainApiClient;
+        private readonly IAssetsService _assetService;
         private readonly IClaimedGasAmountRepository _claimedGasAmountRepository;
         private readonly IDistributionPlanRepository _distributionPlanRepository;
         private readonly string _gasAssetId;
@@ -26,7 +26,7 @@ namespace Lykke.Job.NeoGasDistributor.Services
 
         
         public DistributionPlanService(
-            IBlockchainApiClient blockchainApiClient,
+            IAssetsService assetService,
             IClaimedGasAmountRepository claimedGasAmountRepository,
             IDistributionPlanRepository distributionPlanRepository,
             ILogFactory logFactory,
@@ -34,7 +34,7 @@ namespace Lykke.Job.NeoGasDistributor.Services
             ISnapshotRepository snapshotRepository,
             string gasAssetId)
         {
-            _blockchainApiClient = blockchainApiClient;
+            _assetService = assetService;
             _claimedGasAmountRepository = claimedGasAmountRepository;
             _distributionPlanRepository = distributionPlanRepository;
             _gasAssetId = gasAssetId;
@@ -50,7 +50,7 @@ namespace Lykke.Job.NeoGasDistributor.Services
         {
             var snapshots = await _snapshotRepository.GetAsync(from, to);
             var claimedGasAmounts = await _claimedGasAmountRepository.GetAsync(from, to);
-            var scale = (await _blockchainApiClient.GetAssetAsync(_gasAssetId)).Accuracy;
+            var scale = _assetService.AssetGet(_gasAssetId).Accuracy;
             var distributionAmounts = DistributionPlanCalculator.CalculateAmounts(snapshots, claimedGasAmounts, scale);
 
             var distributionPlan = DistributionPlanAggregate.Create(to, distributionAmounts);

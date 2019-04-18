@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using Lykke.Common.Chaos;
 using Lykke.Sdk.Settings;
+using Lykke.Service.Assets.Client;
 using Lykke.SettingsReader.Attributes;
 
 namespace Lykke.Job.NeoGasDistributor.Settings
@@ -8,6 +9,8 @@ namespace Lykke.Job.NeoGasDistributor.Settings
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class AppSettings : BaseAppSettings
     {
+        public AssetServiceSettings AssetService { get; set; }
+        
         public string BlockchainApiClientHostUrl { get; set; }
         
         [Optional]

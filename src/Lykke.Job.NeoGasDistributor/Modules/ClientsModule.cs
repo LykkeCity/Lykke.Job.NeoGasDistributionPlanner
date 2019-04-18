@@ -1,9 +1,8 @@
 using System.Net;
 using Autofac;
 using JetBrains.Annotations;
-using Lykke.Common.Log;
 using Lykke.Job.NeoGasDistributor.Settings;
-using Lykke.Service.BlockchainApi.Client;
+using Lykke.Service.Assets.Client;
 using Lykke.SettingsReader;
 
 namespace Lykke.Job.NeoGasDistributor.Modules
@@ -28,13 +27,7 @@ namespace Lykke.Job.NeoGasDistributor.Modules
                 .RegisterMeClient(GetIPEndPoint(_appSettings.MatchingEngineClient));
 
             builder
-                .Register(ctx => new BlockchainApiClient
-                (
-                    ctx.Resolve<ILogFactory>(),
-                    _appSettings.BlockchainApiClientHostUrl
-                ))
-                .As<IBlockchainApiClient>()
-                .SingleInstance();
+                .RegisterAssetsClient(_appSettings.AssetService);
         }
         
         private static IPEndPoint GetIPEndPoint(
