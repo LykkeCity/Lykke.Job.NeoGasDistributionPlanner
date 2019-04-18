@@ -29,16 +29,7 @@ namespace Lykke.Job.NeoGasDistributor.Workflow.CommandHandlers
         {
             if (await _distributionPlanService.PlanExistsAsync(command.PlanId))
             {
-                try
-                {
-                    await _distributionPlanService.ExecutePlanAsync(command.PlanId);
-                }
-                catch (Exception)
-                {
-                    var retryDelay = TimeSpan.FromSeconds(30);
-                
-                    return CommandHandlingResult.Fail(retryDelay);
-                }
+                await _distributionPlanService.ExecutePlanAsync(command.PlanId);
             }
             else
             {
