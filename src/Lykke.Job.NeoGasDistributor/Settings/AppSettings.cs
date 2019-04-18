@@ -8,6 +8,8 @@ namespace Lykke.Job.NeoGasDistributor.Settings
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class AppSettings : BaseAppSettings
     {
+        public string BlockchainApiClientHostUrl { get; set; }
+        
         [Optional]
         public ChaosSettings Chaos { get; set; }
 

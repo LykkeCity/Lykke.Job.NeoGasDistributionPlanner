@@ -50,3 +50,5 @@ SlackNotifications:
 MonitoringServiceClient:
   MonitoringServiceUrl:
     settings-key: MonitoringServiceUrl
+BlockchainApiClientHostUrl:
+  settings-key: WalletApiUrl
