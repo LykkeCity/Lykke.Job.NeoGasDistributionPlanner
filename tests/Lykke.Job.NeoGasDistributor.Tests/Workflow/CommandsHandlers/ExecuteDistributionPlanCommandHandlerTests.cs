@@ -48,7 +48,7 @@ namespace Lykke.Job.NeoGasDistributor.Tests.Workflow.CommandsHandlers
         }
         
         [TestMethod]
-        public async Task Test_that_Handle_call_results_in_Ok_if_plan_does_not_exist()
+        public async Task Test_that_Handle_call_throws_exception_if_plan_does_not_exist()
         {
             // Arrange
             var distributionPlanServiceMock = new Mock<IDistributionPlanService>();
@@ -66,18 +66,16 @@ namespace Lykke.Job.NeoGasDistributor.Tests.Workflow.CommandsHandlers
             // Act
             var handler = CreateHandler(distributionPlanServiceMock);
 
-            var actualResult = await handler.Handle
+            Func<Task<CommandHandlingResult>> action = () => handler.Handle
             (
                 new ExecuteDistributionPlanCommand(),
                 eventPublisherMock.Object
             );
 
             // Assert
-            var expectedResult = CommandHandlingResult.Ok();
-
-            actualResult
-                .Should()
-                .BeEquivalentTo(expectedResult);
+            
+            await action.Should()
+                .ThrowAsync<InvalidOperationException>();
         }
 
         [TestMethod]
