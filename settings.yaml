@@ -23,22 +23,20 @@ NeoGasDistributor:
   CreateBalanceSnapshotDelay:
     settings-key: NeoGasDistributor-CreateBalanceSnapshotDelay
   GasAssetId:
-    settings-key: NeoGasDistributor-GasAssetId
+    settings-key: NeoGasAssetId
   NeoAssetId:
-    settings-key: NeoGasDistributor-NeoAssetId
+    settings-key: NeoAssetId
   Db:
     DataConnString:
       settings-key: NeoGasDistributor-DataConnString
       types:
         - AzureTableStorage
-    HangfireConnString:
-      settings-key: HangfireConnString
-    HangfireDatabase:
-      settings-key: NeoGasDistributor-HangfireDatabase
     LogsConnString:
       settings-key: NeoGasDistributor-LogsConnString
       types:
         - AzureTableStorage
+    MongoConnString:
+      settings-key: NeoGasDistributor-MongoConnString
 SlackNotifications:
   AzureQueue:
     ConnectionString:

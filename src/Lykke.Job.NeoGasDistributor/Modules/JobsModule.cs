@@ -65,8 +65,8 @@ namespace Lykke.Job.NeoGasDistributor.Modules
             GlobalConfiguration.Configuration
                 .UseMongoStorage
                 (
-                    connectionString: _dbSettings.HangfireConnString,
-                    databaseName: _dbSettings.HangfireDatabase
+                    connectionString: _dbSettings.MongoConnString,
+                    databaseName: "NeoGasDistributor"
                 );
             
             GlobalConfiguration.Configuration

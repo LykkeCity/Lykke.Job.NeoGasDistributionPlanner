@@ -80,7 +80,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
             var indexEntity = await _distributionPlanIndexTable.GetDataAsync
             (
                 partition: GetIndexPartitionKey(planId),
-                row: GetIndexRowKey(planId)
+                row: GetIndexRowKey()
             );
 
             return indexEntity != null;
@@ -104,7 +104,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
                 PrimaryRowKey = planEntity.RowKey,
 
                 PartitionKey = GetIndexPartitionKey(distributionPlan.Id),
-                RowKey = GetIndexRowKey(distributionPlan.Id)
+                RowKey = GetIndexRowKey()
             };
 
             var amountsPartition = GetAmountPartitionKey(distributionPlan.Timestamp);
@@ -135,7 +135,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
             var indexEntity = await _distributionPlanIndexTable.GetDataAsync
             (
                 partition: GetIndexPartitionKey(planId),
-                row: GetIndexRowKey(planId)
+                row: GetIndexRowKey()
             );
 
             if (indexEntity == null)
@@ -163,7 +163,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
                 IEnumerable<DistributionAmountEntity> entities;
 
                 (entities, continuationToken) = await _distributionAmountTable
-                    .GetDataWithContinuationTokenAsync(amountPartitionKey, 100, continuationToken);
+                    .GetDataWithContinuationTokenAsync(amountPartitionKey, 1000, continuationToken);
 
                 amountEntities.AddRange(entities);
                     
@@ -199,10 +199,9 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
             return planId.ToString();
         }
         
-        private static string GetIndexRowKey(
-            Guid planId)
+        private static string GetIndexRowKey()
         {
-            return planId.ToString();
+            return string.Empty;
         }
 
         private static string GetPlanPartitionKey(

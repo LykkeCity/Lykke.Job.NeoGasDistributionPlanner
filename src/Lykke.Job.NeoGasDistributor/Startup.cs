@@ -2,9 +2,11 @@ using System;
 using Hangfire;
 using JetBrains.Annotations;
 using Lykke.Job.NeoGasDistributor.Settings;
+using Lykke.Logs.Loggers.LykkeSlack;
 using Lykke.Sdk;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Lykke.Job.NeoGasDistributor
 {
@@ -30,6 +32,27 @@ namespace Lykke.Job.NeoGasDistributor
                     {
                         logs.AzureTableName = "NeoGasDistributionPlannerLog";
                         logs.AzureTableConnectionStringResolver = settings => settings.NeoGasDistributor.Db.LogsConnString;
+                        
+                        logs.Extended = opt =>
+                        {
+                            opt.AddAdditionalSlackChannel(
+                                "CommonBlockChainIntegration",
+                                slackOptions =>
+                                {
+                                    slackOptions.MinLogLevel = LogLevel.Information;
+                                    slackOptions.IncludeHealthNotifications();
+                                    slackOptions.SpamGuard.DisableGuarding();
+                                });
+
+                            opt.AddAdditionalSlackChannel(
+                                "CommonBlockChainIntegrationImportantMessages",
+                                slackOptions =>
+                                {
+                                    slackOptions.MinLogLevel = LogLevel.Warning;
+                                    slackOptions.IncludeHealthNotifications();
+                                    slackOptions.SpamGuard.DisableGuarding();
+                                });
+                        };
                     };
                 });
         }

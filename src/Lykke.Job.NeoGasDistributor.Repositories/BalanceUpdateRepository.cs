@@ -56,7 +56,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
                     IEnumerable<BalanceUpdateEntity> entities;
 
                     (entities, continuationToken) = await _balanceUpdateTable
-                        .GetDataWithContinuationTokenAsync(rangeQuery, 100, continuationToken);
+                        .GetDataWithContinuationTokenAsync(rangeQuery, 1000, continuationToken);
 
                     balanceUpdates.AddRange(entities.Select(x => BalanceUpdateAggregate.CreateOrRestore
                     (

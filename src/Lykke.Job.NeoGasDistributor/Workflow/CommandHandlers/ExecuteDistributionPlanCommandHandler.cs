@@ -27,18 +27,12 @@ namespace Lykke.Job.NeoGasDistributor.Workflow.CommandHandlers
             ExecuteDistributionPlanCommand command,
             IEventPublisher publisher)
         {
-            if (await _distributionPlanService.PlanExistsAsync(command.PlanId))
+            if (!await _distributionPlanService.PlanExistsAsync(command.PlanId))
             {
-                await _distributionPlanService.ExecutePlanAsync(command.PlanId);
+                throw new InvalidOperationException($"Distribution plan [{command.PlanId}] has not been executed: plan does not exist.");
             }
-            else
-            {
-                _log.Warning
-                (
-                    $"Distribution plan [{command.PlanId}] has not been executed: plan does not exist.",
-                    context: command
-                );
-            }
+            
+            await _distributionPlanService.ExecutePlanAsync(command.PlanId);
             
             return CommandHandlingResult.Ok();
         }

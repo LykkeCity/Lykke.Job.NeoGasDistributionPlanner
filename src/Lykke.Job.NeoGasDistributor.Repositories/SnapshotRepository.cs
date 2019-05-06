@@ -176,7 +176,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
                     IEnumerable<SnapshotBalanceEntity> entities;
 
                     (entities, continuationToken) = await _balanceTable
-                        .GetDataWithContinuationTokenAsync(rangeQuery, 100, continuationToken);
+                        .GetDataWithContinuationTokenAsync(rangeQuery, 1000, continuationToken);
                 
                     balanceEntities.AddRange(entities);
 

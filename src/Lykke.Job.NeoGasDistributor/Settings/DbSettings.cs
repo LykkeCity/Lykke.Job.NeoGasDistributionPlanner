@@ -9,9 +9,7 @@ namespace Lykke.Job.NeoGasDistributor.Settings
         [AzureTableCheck]
         public string DataConnString { get; set; }
         
-        public string HangfireConnString { get; set; }
-        
-        public string HangfireDatabase { get; set; }
+        public string MongoConnString { get; set; }
         
         [AzureTableCheck]
         public string LogsConnString { get; set; }
