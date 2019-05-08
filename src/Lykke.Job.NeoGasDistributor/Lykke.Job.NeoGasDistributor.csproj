@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <OutputType>Exe</OutputType>
+      <TargetFramework>netcoreapp2.2</TargetFramework>
+      <Version>1.0.1</Version>
+    </PropertyGroup>
+  
+  <PropertyGroup>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.6.23" />
+    <PackageReference Include="Hangfire.Autofac" Version="2.3.1" />
+    <PackageReference Include="Hangfire.Core" Version="1.6.23" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.0" />
+    <PackageReference Include="Hangfire.Mongo" Version="0.5.15" />
+    <PackageReference Include="Lykke.Cqrs" Version="9.0.0" />
+    <PackageReference Include="Lykke.Cqrs.MessageCancellation" Version="2.4.1" />
+    <PackageReference Include="Lykke.Logs.Hangfire" Version="1.0.0-beta.2" />
+    <PackageReference Include="Lykke.Messaging" Version="6.3.0" />
+    <PackageReference Include="Lykke.Messaging.RabbitMq" Version="2.2.0" />
+    <PackageReference Include="Lykke.Sdk" Version="5.11.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\contract\NeoGasDistributor.Contract\NeoGasDistributor.Contract.csproj" />
+    <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Domain\Lykke.Job.NeoGasDistributor.Domain.csproj" />
+    <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Repositories\Lykke.Job.NeoGasDistributor.Repositories.csproj" />
+    <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Services\Lykke.Job.NeoGasDistributor.Services.csproj" />
+    <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Utils\Lykke.Job.NeoGasDistributor.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

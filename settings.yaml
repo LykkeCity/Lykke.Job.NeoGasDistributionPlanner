@@ -1,0 +1,53 @@
+Chaos:
+  StateOfChaos:
+    settings-key: NeoGasDistributor-StateOfChaos
+Cqrs:
+  RabbitConnectionString:
+    settings-key: CqrsRabbitConnString
+    types:
+      - RabbitMq
+  RetryDelay:
+    settings-key: NeoGasDistributor-CqrsRetryDelay
+MatchingEngineClient:
+  Host:
+    settings-key: MatchingEngine-Host
+  Port:
+    settings-key: MatchingEngine-Port
+NeoGasDistributor:
+  CreateDistributionPlanCron:
+    settings-key: NeoGasDistributor-CreateDistributionPlanCron
+  CreateDistributionPlanDelay:
+    settings-key: NeoGasDistributor-CreateDistributionPlanDelay
+  CreateBalanceSnapshotCron:
+    settings-key: NeoGasDistributor-CreateBalanceSnapshotCron
+  CreateBalanceSnapshotDelay:
+    settings-key: NeoGasDistributor-CreateBalanceSnapshotDelay
+  GasAssetId:
+    settings-key: NeoGasAssetId
+  NeoAssetId:
+    settings-key: NeoAssetId
+  Db:
+    DataConnString:
+      settings-key: NeoGasDistributor-DataConnString
+      types:
+        - AzureTableStorage
+    LogsConnString:
+      settings-key: NeoGasDistributor-LogsConnString
+      types:
+        - AzureTableStorage
+    MongoConnString:
+      settings-key: NeoGasDistributor-MongoConnString
+SlackNotifications:
+  AzureQueue:
+    ConnectionString:
+      settings-key: SlackNotificationsConnString
+      types:
+        - AzureTableStorage
+    QueueName:
+      settings-key: SlackQueueName
+MonitoringServiceClient:
+  MonitoringServiceUrl:
+    settings-key: MonitoringServiceUrl
+AssetService:
+  ServiceUrl:
+    settings-key: AssetsServiceUrl

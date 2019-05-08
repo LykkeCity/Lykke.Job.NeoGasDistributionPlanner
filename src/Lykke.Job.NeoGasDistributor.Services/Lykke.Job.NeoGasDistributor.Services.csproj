@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Version>1.0.1</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Cronos" Version="0.7.0" />
+      <PackageReference Include="Lykke.Job.NeoClaimTransactionsExecutor.Contract" Version="1.0.1" />
+      <PackageReference Include="Lykke.MatchingEngineConnector" Version="8.6.0" />
+      <PackageReference Include="Lykke.Service.Assets.Client" Version="5.2.1" />
+      <PackageReference Include="Lykke.Service.Balances.Client" Version="2.3.1-beta" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lykke.Job.NeoGasDistributor.Domain\Lykke.Job.NeoGasDistributor.Domain.csproj" />
+    </ItemGroup>
+
+</Project>
