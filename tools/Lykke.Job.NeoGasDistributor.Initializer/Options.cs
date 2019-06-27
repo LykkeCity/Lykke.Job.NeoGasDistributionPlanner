@@ -1,4 +1,4 @@
-using CommandLine;
+﻿using CommandLine;
 using JetBrains.Annotations;
 
 namespace Lykke.Job.NeoGasDistributor

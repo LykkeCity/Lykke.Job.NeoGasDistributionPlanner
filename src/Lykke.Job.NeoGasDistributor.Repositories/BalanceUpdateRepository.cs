@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -87,6 +87,21 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
             return _balanceUpdateTable.InsertOrReplaceAsync(entity);
         }
 
+        public Task SaveBatchAsync(
+            IEnumerable<BalanceUpdateAggregate> balanceUpdates)
+        {
+            var entities = balanceUpdates.Select(x => new BalanceUpdateEntity
+            {
+                EventTimestamp = x.EventTimestamp,
+                NewBalance = x.NewBalance,
+                WalletId = x.WalletId,
+                PartitionKey = GetPartitionKey(x.EventTimestamp),
+                RowKey = GetRowKey(x.EventTimestamp, x.WalletId)
+            });
+            
+            return _balanceUpdateTable.InsertOrReplaceBatchAsync(entities);
+        }
+
         public async Task<DateTime?> TryGetFirstTimestampAsync()
         {
             return (await _balanceUpdateTable
@@ -94,7 +109,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
                 .EventTimestamp;
         }
 
-        private static string GetPartitionKey(
+        public static string GetPartitionKey(
             DateTime eventTimestamp)
         {
             return eventTimestamp.ToString("yyyyMMdd");

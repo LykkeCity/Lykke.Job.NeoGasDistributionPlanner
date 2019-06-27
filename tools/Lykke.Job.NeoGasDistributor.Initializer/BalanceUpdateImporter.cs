@@ -1,26 +1,30 @@
-using System;
-using System.Collections.Immutable;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Log;
 using Lykke.Common.Log;
 using Lykke.Job.NeoGasDistributor.Domain;
 using Lykke.Job.NeoGasDistributor.Domain.Repositories;
+using Lykke.Job.NeoGasDistributor.Repositories;
+using MoreLinq;
 
 namespace Lykke.Job.NeoGasDistributor
 {
     public class BalanceUpdateImporter
     {
+        private readonly string _neoAssetId;
         private readonly IBalanceUpdateRepository _balanceUpdateRepository;
         private readonly ILog _log;
-        private readonly MELogReader _meLogReader;
+        private readonly MeLogReader _meLogReader;
         
         
         public BalanceUpdateImporter(
+            string neoAssetId,
             IBalanceUpdateRepository balanceUpdateRepository,
             ILogFactory logFactory,
-            MELogReader meLogReader)
+            MeLogReader meLogReader)
         {
+            _neoAssetId = neoAssetId;
             _balanceUpdateRepository = balanceUpdateRepository;
             _log = logFactory.CreateLog(this);
             _meLogReader = meLogReader;
@@ -28,30 +32,50 @@ namespace Lykke.Job.NeoGasDistributor
 
         public async Task ImportBalancesAsync()
         {
-            var logRecords = _meLogReader
-                .GetRecords()
-                .OrderBy(x => x.Date)
-                .ToImmutableList();
-            
-            _log.Info($"Preparing {logRecords.Count} balance updates for import.");
+            var balanceUpdateBatches = _meLogReader.GetBalanceUpdates()
+                .SelectMany
+                (
+                    x => x.BalanceUpdates
+                        .Where(b => b.AssetId == _neoAssetId)
+                        .Select(b => new
+                        {
+                            Date = x.Header.Timestamp.UtcDateTime, 
+                            WalletId = b.WalletId,
+                            NewBalance = b.NewBalance
+                        })
+                )
+                .GroupBy(x => BalanceUpdateRepository.GetPartitionKey(x.Date));
 
-            var progressCounter = 0;
+            _log.Info($"Starting asset {_neoAssetId} balance updates import...");
+
+            var batchesCounter = 0;
+            var balanceUpdatesCounter = 0;
             
             try
             {
-                foreach (var logRecord in logRecords)
+                foreach (var balanceUpdatesGroup in balanceUpdateBatches)
                 {
-                    await _balanceUpdateRepository.SaveAsync(BalanceUpdateAggregate.CreateOrRestore
-                    (
-                        eventTimestamp: logRecord.Date,
-                        newBalance: logRecord.NewBalance,
-                        walletId: logRecord.Id
-                    ));
-                    
-                    _log.Info($"{++progressCounter} of {logRecords.Count} balance updates have been imported.");
+                    foreach (var balanceUpdatesBatch in balanceUpdatesGroup.Batch(1000))
+                    {
+                        var aggregates = balanceUpdatesBatch
+                            .Select(x => BalanceUpdateAggregate.CreateOrRestore
+                            (
+                                eventTimestamp: x.Date,
+                                newBalance: x.NewBalance,
+                                walletId: x.WalletId
+                            ))
+                            .Distinct(BalanceUpdateAggregateComparer.Instance)
+                            .ToArray();
+
+                        await _balanceUpdateRepository.SaveBatchAsync(aggregates);
+
+                        balanceUpdatesCounter += aggregates.Count();
+
+                        _log.Info($"{++batchesCounter} balance update batches and {balanceUpdatesCounter} balances have been imported.");
+                    }
                 }
                 
-                _log.Info("Balance updated import has been completed.");
+                _log.Info($"Balance updates import has been completed. {balanceUpdatesCounter} balance updates have been imported.");
             }
             catch (Exception e)
             {
