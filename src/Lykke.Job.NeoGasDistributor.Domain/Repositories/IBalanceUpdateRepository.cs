@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +12,9 @@ namespace Lykke.Job.NeoGasDistributor.Domain.Repositories
 
         Task SaveAsync(
             BalanceUpdateAggregate balanceUpdate);
+
+        Task SaveBatchAsync(
+            IEnumerable<BalanceUpdateAggregate> balanceUpdates);
 
         Task<DateTime?> TryGetFirstTimestampAsync();
     }

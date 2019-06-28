@@ -1,4 +1,4 @@
-using Autofac;
+﻿using Autofac;
 using Lykke.Common.Log;
 using Lykke.Job.NeoGasDistributor.Domain.Repositories;
 using Lykke.Job.NeoGasDistributor.Repositories;
@@ -32,7 +32,9 @@ namespace Lykke.Job.NeoGasDistributor
                 .As<ILogFactory>();
             
             builder
-                .RegisterInstance(new MELogReader(_meLogsFolderPath))
+                .RegisterType<MeLogReader>()
+                .WithParameter(TypedParameter.From(_meLogsFolderPath))
+                .SingleInstance()
                 .AsSelf();
             
             builder
@@ -46,9 +48,10 @@ namespace Lykke.Job.NeoGasDistributor
             builder
                 .Register(ctx => new BalanceUpdateImporter
                 (
+                    _neoGasDistributorSettings.CurrentValue.NeoGasDistributor.NeoAssetId,
                     ctx.Resolve<IBalanceUpdateRepository>(),
                     ctx.Resolve<ILogFactory>(),
-                    ctx.Resolve<MELogReader>()
+                    ctx.Resolve<MeLogReader>()
                 ));
         }
     }
