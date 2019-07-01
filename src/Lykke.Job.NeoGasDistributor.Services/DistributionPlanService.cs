@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Common.Log;
 using JetBrains.Annotations;
@@ -48,8 +48,8 @@ namespace Lykke.Job.NeoGasDistributor.Services
             DateTime from,
             DateTime to)
         {
-            var snapshots = await _snapshotRepository.GetAsync(from, to);
             var claimedGasAmounts = await _claimedGasAmountRepository.GetAsync(from, to);
+            var snapshots = await _snapshotRepository.GetAsync(from, to);
             var scale = _assetService.AssetGet(_gasAssetId).Accuracy;
             var distributionAmounts = DistributionPlanCalculator.CalculateAmounts(snapshots, claimedGasAmounts, scale);
 
