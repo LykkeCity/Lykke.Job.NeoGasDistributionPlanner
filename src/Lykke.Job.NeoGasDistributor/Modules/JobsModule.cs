@@ -1,8 +1,9 @@
-using Autofac;
+﻿using Autofac;
 using Cronos;
 using Hangfire;
 using Hangfire.Mongo;
 using JetBrains.Annotations;
+using Lykke.Common.Log;
 using Lykke.Job.NeoGasDistributor.Domain.Services;
 using Lykke.Job.NeoGasDistributor.Jobs;
 using Lykke.Job.NeoGasDistributor.Settings;
@@ -33,6 +34,7 @@ namespace Lykke.Job.NeoGasDistributor.Modules
             builder
                 .Register(ctx => new CreateBalanceSnapshotJob
                 (
+                    ctx.Resolve<ILogFactory>(),
                     ctx.Resolve<IBalanceService>(),
                     CronExpression.Parse(_jobSettings.CreateBalanceSnapshotCron),
                     _jobSettings.CreateBalanceSnapshotDelay,
@@ -44,6 +46,7 @@ namespace Lykke.Job.NeoGasDistributor.Modules
             builder
                 .Register(ctx => new CreateDistributionPlanJob
                 (
+                    ctx.Resolve<ILogFactory>(),
                     ctx.Resolve<IBalanceService>(),
                     CronExpression.Parse(_jobSettings.CreateDistributionPlanCron),
                     _jobSettings.CreateDistributionPlanDelay,

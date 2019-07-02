@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cronos;
@@ -6,6 +6,8 @@ using FluentAssertions;
 using Lykke.Job.NeoGasDistributor.Domain.Services;
 using Lykke.Job.NeoGasDistributor.Jobs;
 using Lykke.Job.NeoGasDistributor.Tests.Utils;
+using Lykke.Logs;
+using Lykke.Logs.Loggers.LykkeConsole;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -46,6 +48,7 @@ namespace Lykke.Job.NeoGasDistributor.Tests.Jobs
             // Act
             var job = new CreateBalanceSnapshotJob
             (
+                LogFactory.Create().AddUnbufferedConsole(),
                 balanceServiceMock.Object,
                 createBalanceSnapshotCron,
                 createBalanceSnapshotDelay,
@@ -103,6 +106,7 @@ namespace Lykke.Job.NeoGasDistributor.Tests.Jobs
             // Act
             var job = new CreateBalanceSnapshotJob
             (
+                LogFactory.Create().AddUnbufferedConsole(),
                 balanceServiceMock.Object,
                 createBalanceSnapshotCron,
                 createBalanceSnapshotDelay,

@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.ComponentModel;
 
 namespace Lykke.Job.NeoGasDistributor.Domain
@@ -9,7 +8,7 @@ namespace Lykke.Job.NeoGasDistributor.Domain
     public sealed class DistributionPlanAggregate
     {
         private DistributionPlanAggregate(
-            IEnumerable<Amount> amounts,
+            IReadOnlyCollection<Amount> amounts,
             DateTime timestamp)
         
             : this (amounts, Guid.NewGuid(), timestamp)
@@ -18,11 +17,11 @@ namespace Lykke.Job.NeoGasDistributor.Domain
         }
         
         private DistributionPlanAggregate(
-            IEnumerable<Amount> amounts,
+            IReadOnlyCollection<Amount> amounts,
             Guid id,
             DateTime timestamp)
         {
-            Amounts = amounts.ToImmutableArray();
+            Amounts = amounts;
             Id = id;
             Timestamp = timestamp;
         }
@@ -37,7 +36,7 @@ namespace Lykke.Job.NeoGasDistributor.Domain
 
         public static DistributionPlanAggregate Create(
             DateTime timestamp,
-            IEnumerable<Amount> amounts)
+            IReadOnlyCollection<Amount> amounts)
         {
             return new DistributionPlanAggregate
             (
@@ -49,7 +48,7 @@ namespace Lykke.Job.NeoGasDistributor.Domain
         public static DistributionPlanAggregate Restore(
             Guid id,
             DateTime timestamp,
-            IEnumerable<Amount> amounts)
+            IReadOnlyCollection<Amount> amounts)
         {
             return new DistributionPlanAggregate
             (

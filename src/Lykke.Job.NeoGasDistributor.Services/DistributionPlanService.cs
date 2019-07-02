@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Common.Log;
 using JetBrains.Annotations;
@@ -48,12 +49,30 @@ namespace Lykke.Job.NeoGasDistributor.Services
             DateTime from,
             DateTime to)
         {
+            _log.Info($"Creating distribution plan for {from}-{to}...");
+
             var claimedGasAmounts = await _claimedGasAmountRepository.GetAsync(from, to);
+
+            _log.Info("Claimed GAS amount found", new
+            {
+                claimedGasAmounts
+            });
+
             var snapshots = await _snapshotRepository.GetAsync(from, to);
+
+            _log.Info($"{snapshots.Count} balance snapshots found");
+
             var scale = _assetService.AssetGet(_gasAssetId).Accuracy;
-            var distributionAmounts = DistributionPlanCalculator.CalculateAmounts(snapshots, claimedGasAmounts, scale);
+
+            _log.Info($"GAS scale {scale}");
+
+            var distributionAmounts = DistributionPlanCalculator.CalculateAmounts(snapshots, claimedGasAmounts, scale).ToArray();
+
+            _log.Info($"{distributionAmounts.Length} distribution amounts gotten");
 
             var distributionPlan = DistributionPlanAggregate.Create(to, distributionAmounts);
+
+            _log.Info($"Distribution plan {distributionPlan.Id} created");
 
             await _distributionPlanRepository.SaveAsync(distributionPlan);
         }
@@ -61,10 +80,17 @@ namespace Lykke.Job.NeoGasDistributor.Services
         public async Task ExecutePlanAsync(
             Guid planId)
         {
+            _log.Info("Distribution plan execution started...", new
+            {
+                planId
+            });
+
             var distributionPlan = await _distributionPlanRepository.TryGetAsync(planId);
 
             if (distributionPlan != null)
             {
+                _log.Info($"Plan contains {distributionPlan.Amounts} amounts to distribute");
+
                 foreach (var distributionAmount in distributionPlan.Amounts)
                 {
                     var result = await _matchingEngineClient.CashInOutAsync
