@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AzureStorage;
 using AzureStorage.Tables;
+using Common;
 using JetBrains.Annotations;
 using Lykke.AzureStorage.Tables;
 using Lykke.Common.Log;
@@ -99,7 +100,9 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
             DateTime from,
             DateTime to)
         {
-            for (var partition = from.Date; partition.Date <= to; partition = partition.AddMonths(1))
+            var roundedTo = to.RoundToMonth();
+
+            for (var partition = from.Date.RoundToMonth(); partition.Date <= roundedTo; partition = partition.AddMonths(1))
             {
                 var partitionQuery = TableQuery.GenerateFilterCondition
                 (

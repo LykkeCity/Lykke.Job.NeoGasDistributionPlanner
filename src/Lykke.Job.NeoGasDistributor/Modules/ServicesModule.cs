@@ -1,4 +1,4 @@
-using Autofac;
+﻿using Autofac;
 using JetBrains.Annotations;
 using Lykke.Common.Log;
 using Lykke.Cqrs;
@@ -41,6 +41,7 @@ namespace Lykke.Job.NeoGasDistributor.Modules
             builder
                 .Register(ctx => new BalanceService
                 (
+                    ctx.Resolve<ILogFactory>(),
                     ctx.Resolve<IBalanceUpdateRepository>(),
                     ctx.Resolve<ISnapshotRepository>()
                 ))

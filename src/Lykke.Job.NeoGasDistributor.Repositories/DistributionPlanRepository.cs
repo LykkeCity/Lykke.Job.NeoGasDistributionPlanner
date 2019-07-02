@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -170,8 +170,13 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
             } while (continuationToken != null);
                 
             return DistributionPlanAggregate.Restore
-            (planEntity.PlanId,
-                planEntity.PlanTimestamp, amountEntities.Select(x => DistributionPlanAggregate.Amount.Restore(walletId: x.WalletId, amountId: x.AmountId, value: x.AmountValue)));
+            (
+                planEntity.PlanId,
+                planEntity.PlanTimestamp, 
+                amountEntities
+                    .Select(x => DistributionPlanAggregate.Amount.Restore(walletId: x.WalletId, amountId: x.AmountId, value: x.AmountValue))
+                    .ToArray()
+            );
         }
 
         public async Task<DateTime?> TryGetLatestTimestampAsync()

@@ -1,7 +1,9 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Log;
 using JetBrains.Annotations;
+using Lykke.Common.Log;
 using Lykke.Job.NeoGasDistributor.Domain;
 using Lykke.Job.NeoGasDistributor.Domain.Repositories;
 using Lykke.Job.NeoGasDistributor.Domain.Services;
@@ -13,12 +15,15 @@ namespace Lykke.Job.NeoGasDistributor.Services
     {
         private readonly IBalanceUpdateRepository _balanceUpdateRepository;
         private readonly ISnapshotRepository _snapshotRepository;
+        private readonly ILog _log;
 
-        
+
         public BalanceService(
+            ILogFactory logFactory,
             IBalanceUpdateRepository balanceUpdateRepository,
             ISnapshotRepository snapshotRepository)
         {
+            _log = logFactory.CreateLog(this);
             _balanceUpdateRepository = balanceUpdateRepository;
             _snapshotRepository = snapshotRepository;
         }
@@ -28,16 +33,21 @@ namespace Lykke.Job.NeoGasDistributor.Services
             DateTime from,
             DateTime to)
         {
+            _log.Info($"Creating balance snapshot for {from}-{to}...");
+
             var snapshotBalances = (await _balanceUpdateRepository
                 .GetAsync(from, to))
                 .OrderBy(x => x.EventTimestamp)
                 .GroupBy(x => x.WalletId)
                 .ToDictionary(x => x.Key, x => x.Select(y => y.NewBalance).Last());
             
-            
+            _log.Info($"{snapshotBalances.Count} balance updates found");
+
             var previousSnapshot = await _snapshotRepository.TryGetAsync(from);
             if (previousSnapshot != null)
             {
+                _log.Info($"Previous snapshot found with {previousSnapshot.Balances.Count} balances");
+
                 foreach (var balance in previousSnapshot.Balances)
                 {
                     if (!snapshotBalances.ContainsKey(balance.WalletId))
@@ -46,7 +56,6 @@ namespace Lykke.Job.NeoGasDistributor.Services
                     }
                 }
             }
-
             
             var newSnapshot = SnapshotAggregate.CreateOrRestore
             (
