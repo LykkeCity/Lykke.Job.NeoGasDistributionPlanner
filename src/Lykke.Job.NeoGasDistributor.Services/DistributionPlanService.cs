@@ -49,7 +49,7 @@ namespace Lykke.Job.NeoGasDistributor.Services
             DateTime from,
             DateTime to)
         {
-            _log.Info($"Creating distribution plan for {from}-{to}...");
+            _log.Info($"Creating distribution plan for {from:s} - {to:s}...");
 
             var claimedGasAmounts = await _claimedGasAmountRepository.GetAsync(from, to);
 

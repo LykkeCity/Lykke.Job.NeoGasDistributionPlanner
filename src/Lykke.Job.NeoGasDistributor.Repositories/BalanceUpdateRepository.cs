@@ -119,7 +119,9 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
             DateTime from,
             DateTime to)
         {
-            for (var partition = from.Date; partition.Date <= to; partition = partition.AddDays(1))
+            var roundedTo = to.Date;
+
+            for (var partition = from.Date; partition <= roundedTo; partition = partition.AddDays(1))
             {
                 var partitionQuery = TableQuery.GenerateFilterCondition
                 (

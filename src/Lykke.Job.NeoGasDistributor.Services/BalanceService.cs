@@ -33,7 +33,7 @@ namespace Lykke.Job.NeoGasDistributor.Services
             DateTime from,
             DateTime to)
         {
-            _log.Info($"Creating balance snapshot for {from}-{to}...");
+            _log.Info($"Creating balance snapshot for {from:s} - {to:s}...");
 
             var snapshotBalances = (await _balanceUpdateRepository
                 .GetAsync(from, to))

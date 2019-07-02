@@ -102,7 +102,7 @@ namespace Lykke.Job.NeoGasDistributor.Repositories
         {
             var roundedTo = to.RoundToMonth();
 
-            for (var partition = from.Date.RoundToMonth(); partition.Date <= roundedTo; partition = partition.AddMonths(1))
+            for (var partition = from.RoundToMonth(); partition <= roundedTo; partition = partition.AddMonths(1))
             {
                 var partitionQuery = TableQuery.GenerateFilterCondition
                 (
